@@ -19,16 +19,16 @@ def go_forward(inp):
 
 def train(epoch):
     global W2, W1
-    lmd = 0.01
-    N = 10000
+    lmd = 0.01          # шаг обучения
+    N = 10000           # число итераций при обучении
     count = len(epoch)
     for k in range(N):
         x = epoch[np.random.randint(0, count)]
         y, out = go_forward(x[0:3])
         e = y - x[-1]
         delta = e*df(y)
-        W2[0] = W2[0] - lmd + delta * out
-        W2[1] = W2[1] - lmd + delta * out
+        W2[0] = W2[0] - lmd * delta * out[0]
+        W2[1] = W2[1] - lmd * delta * out[1]
 
         delta2 = W2*delta*df(out)
 
@@ -44,6 +44,8 @@ epoch = [(-1, -1, -1, -1),
          (1, -1, 1, 1),
          (1, 1, -1, -1),
          (1, 1, 1, -1)]
+
+train(epoch)
 
 for x in epoch:
     y, out = go_forward(x[0:3])
